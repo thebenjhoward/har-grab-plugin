@@ -17,4 +17,7 @@ javascript console.
 
 ## Drawbacks
 The har dump is triggered by a keyboard shortcut, meaning the browser must be
-focused. Unfortunately selenium cannot send keystrokes to 
+focused. Unfortunately selenium cannot send keystrokes at the browser level, and
+chrome currently doesn't read selenium inputs as browser inputs, so something
+like `java.awt.Robot`, Sikuli, or some equivalent system in python should be used.
+This means the window will need to run with head on and be focused during the tests
