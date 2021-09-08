@@ -1,7 +1,8 @@
 # har-grab-plugin
 
-*note: currently this tool only supports chrome and chromium based browsers,*
-*support for other browsers will be added later (likely firefox first)*
+*Note: currently this tool only supports chrome, chromium based browsers,*
+*and firefox (which can support chrome plugins by default. IE/EdgeHTML support*
+*may be added later, but it is not high priority as documentation is slim*
 
 This is a simple chrome plugin meant to assist in automated testing with 
 tools like selenium without having to deal with a proxy to get web traffic,
@@ -15,9 +16,37 @@ usage instructions. After it gets the har, it puts it at `document.har` so it
 can be accessed by any automated testing framework that has access to the
 javascript console.
 
+## Advantages
+Depending on what you are testing, it may be difficult to get a proxy to function
+in a way that you can obtain a full har dump. Furthermore, performance logs, which
+are what Chrome Devtools Protocol uses, may not include all the needed information
+This creates a complete HAR dump
+
 ## Drawbacks
 The har dump is triggered by a keyboard shortcut, meaning the browser must be
 focused. Unfortunately selenium cannot send keystrokes at the browser level, and
 chrome currently doesn't read selenium inputs as browser inputs, so something
 like `java.awt.Robot`, Sikuli, or some equivalent system in python should be used.
 This means the window will need to run with head on and be focused during the tests
+
+*note: in future, I may be able to implement a function that is automatically 
+defined which can trigger the dump. I'm not entirely sure if this is possible though* 
+
+
+## Usage
+
+### Step 1: Pack the Extension
+For Chrome:
+    1. Go to `chrome://extensions`
+    2. Turn on "Developer Mode" in the upper right hand corner if it is not already on
+    3. Click 'Pack Extension'
+    4. Select the folder `har-grab-plugin/src` and do not select a license.
+    5. A `.crx` file and `.pem` file has been generated. The `.pem` is not needed unless
+    you intend on modifying the plugin for some easier parsing of the HAR.
+
+For Firefox:
+    1. Navigate to `har-grab-plugin/src` in a file manager or terminal
+    2. Add all files in the directory to a zip directory with a name of your choosing
+
+
+### Step 2: Use the extension

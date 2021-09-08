@@ -1,0 +1,30 @@
+{
+    "name": "HAR Grabber",
+    "version": "1.0",
+    "description": "Leverages the devtools.network api to get a full har dump from the dev console for automated tests",
+
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": true
+    },
+
+    "commands": {
+        "dump-har" : {
+            "suggested_key": {
+                "default": "Ctrl+Shift+Y",
+                "mac": "Command+Shift+Y"
+            },
+            "description": "Dumps har log to javascript console"
+        }
+    },
+
+    "devtools_page": "devtools.html",
+
+    "permissions" : [
+        "*://*",
+        "tabs"
+    ],
+
+
+    "manifest_version": 2
+}
