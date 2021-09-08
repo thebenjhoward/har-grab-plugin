@@ -24,10 +24,9 @@ This creates a complete HAR dump
 
 ## Drawbacks
 The har dump is triggered by a keyboard shortcut, meaning the browser must be
-focused. Unfortunately selenium cannot send keystrokes at the browser level, and
-chrome currently doesn't read selenium inputs as browser inputs, so something
-like `java.awt.Robot`, Sikuli, or some equivalent system in python should be used.
-This means the window will need to run with head on and be focused during the tests
+focused. Unfortunately chrome currently doesn't read selenium inputs as browser inputs,
+so something like `java.awt.Robot`, Sikuli, or some equivalent system in python should 
+be used. This means the window will need to run with head on and be focused during the tests
 
 *note: in future, I may be able to implement a function that is automatically 
 defined which can trigger the dump. I'm not entirely sure if this is possible though* 
@@ -50,3 +49,43 @@ For Firefox:
 
 
 ### Step 2: Use the extension
+In Python for Chrome (with pyautogui):
+```python
+from selenium import webdriver
+import pyautogui
+
+options = webdriver.ChromeOptions()
+options.add_argument("--auto-open-devtools-for-tabs")
+options.add_extension('path/to/file')
+
+driver = webdriver.Chrome(chrome_options=options)
+
+driver.get("https://google.com/")
+
+pyautogui.keyDown("ctrl")
+pyautogui.keyDown("shift")
+pyautogui.keyDown("y")
+pyautogui.keyUp("ctrl")
+pyautogui.keyUp("shift")
+pyautogui.keyUp("y")
+
+har = driver.execute_script("return JSON.stringify(document.har)")
+```
+
+In Python for Firefox:
+```python
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+profile = webdriver.FirefoxProfile()
+profile.add_extension('path/to/file')
+
+driver = webdriver.Firefox(firefox_profile=profile)
+
+driver.get("https://google.com/")
+driver.find_element_by_tag_name("body").send_keys(Keys.F12)
+
+driver.find_element_by_tag_name("body").send_keys(Keys.CTRL + Keys.SHIFT + 'y')
+
+har = driver.execute_script("return JSON.stringify(document.har)")
+```
