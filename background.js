@@ -6,6 +6,11 @@ try {
         console.log("Plugin Loaded");
     });
 
+    chrome.runtime.onMessage.addListener((msg) => {
+        console.log(msg)
+    });
+
+
     chrome.runtime.onConnect.addListener((port) => {
         console.assert(port.name.includes("har_"));
         ports[port.name.substr(4)] = port;
